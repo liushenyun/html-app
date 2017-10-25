@@ -1,2 +1,82 @@
 # html-app
-h5
+h5与app交互
+
+### H5调用APP本地方法
+> js代码
+
+```js
+/**
+ * @description html5CallApp 调起支付
+ * @param data { String }  data  h5传给app的数据 需要APP定义格式
+ * @return returnVal { String }  app返回给h5的值（如不需要可不返回）
+ *  DTCJSObject.htmlOpenSlide  app本地方法
+ */
+var returnVal = window.DTCJSObject.htmlOpenSlide(data)
+```
+>android 代码
+
+```android
+webView.addJavascriptInterface(new JSMethod(), "DTCJSObject"
+
+private class JSMethod {
+        @JavascriptInterface
+        public void htmlOpenSlide(String flag) {
+            // runOnUiThread(new Runnable() {
+            //    @Override
+            //    public void run() {
+            //        openDrawer();
+            //    }
+			// 有返回值  就加一个return
+			return ‘返回给H5的值’
+            });
+        }
+```
+> ios代码
+
+```ios
+	//首先创建JSContext 对象（此处通过当前webView的键获取到jscontext）
+    //js是通过对象调用的，我们假设js里面有一个对象 testobject 在调用方法
+    //首先创建我们新建类的对象，将他赋值给js的对象
+    JSContext *context=[self.webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    self.JSObject = [DTCJSObject new];
+    context[@"DTCJSObject"] = self.JSObject;
+    //同样我们也用刚才的方式模拟一下js调用方法
+    NSString *jsStr1 = @"htmlOpenSlide()";
+    [context evaluateScript:jsStr1];
+```
+
+### APP调用js
+
+> js代码
+
+``` js
+    /**
+      * @descripttion appCallHtml
+      * app 可以直接调用 'appCallHtml' 这个方法
+      * @param data  是app传给h5的数据
+    */
+      window.appCallHtml = function(data) {
+            alter(data)
+      }
+```
+> android代码
+
+```android
+private void callJSMethod() {  //调用js的方法
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                webView.loadUrl("javascript:appCallHtml('这是传给h5的数据')");
+            }
+        });
+    }
+```
+> ios代码
+
+```ios
+JSContext *context = [_webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    //oc 调用 js
+    NSString *textJS = @"appCallHtml('这是传给h5的数据')";
+    [context evaluateScript:textJS];
+```
+
