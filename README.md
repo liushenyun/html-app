@@ -26,15 +26,15 @@ private class JSMethod {
             //    public void run() {
             //        openDrawer();
             //    }
-			// 有返回值  就加一个return
-			return ‘返回给H5的值’
+           // 有返回值  就加一个return
+                return ‘返回给H5的值’
             });
         }
 ```
 > ios代码
 
 ```ios
-	//首先创建JSContext 对象（此处通过当前webView的键获取到jscontext）
+    //首先创建JSContext 对象（此处通过当前webView的键获取到jscontext）
     //js是通过对象调用的，我们假设js里面有一个对象 testobject 在调用方法
     //首先创建我们新建类的对象，将他赋值给js的对象
     JSContext *context=[self.webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
@@ -80,3 +80,29 @@ JSContext *context = [_webView valueForKeyPath:@"documentView.webView.mainFrame.
     [context evaluateScript:textJS];
 ```
 
+## 常见问题
+##### 1、webView “alert”无法使用
+app没有打开允许webView弹框的功能
+
+##### 2、TypeError: Cannot read property 'setItem' of null", source
+是因为android 没有打开 允许使用Storage数据 
+需要打开：
+```android
+webSettings.setDomStorageEnabled(true);//允许使用Storage数据 
+webSettings.setJavaScriptEnabled(true); //支持js
+可参考：http://www.jianshu.com/p/c13b394e1143
+```
+##### 3、webView 返回问题(较好的方法)
+> android代码
+
+```android
+@Override
+public boolean onKeyDown (int keyCode, KeyEvent event)  {
+	if(keyCode == KeyEvent,KEYCODE_BACK)  {
+		if(webView.canGoBack())  {
+		  webView.goBack();
+		  return true;
+		}
+	}
+}
+```

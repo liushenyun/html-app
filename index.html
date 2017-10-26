@@ -31,11 +31,11 @@
             _callApp.onclick = function() {
                 // 可不进行判断
                 if (u.indexOf('Android') > -1) {
-                    var returnVal = window.DTCJSObject.htmlReuestPay(JSON.stringify(giveAppData));
+                    var returnVal = window.DTCJSObject.htmlOpenSlide(JSON.stringify(giveAppData));
                     alert(returnVal)
 
                 } else if (u.indexOf('iPhone') > -1 || u.indexOf('iPad') > -1) {
-                    var returnVal = window.DTCJSObject.htmlReuestPay(JSON.stringify(giveAppData));
+                    var returnVal = window.DTCJSObject.htmlOpenSlide(JSON.stringify(giveAppData));
                     alert(returnVal)
                 }
             };
