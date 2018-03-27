@@ -92,7 +92,7 @@ webSettings.setDomStorageEnabled(true);//允许使用Storage数据
 webSettings.setJavaScriptEnabled(true); //支持js
 可参考：http://www.jianshu.com/p/c13b394e1143
 ```
-##### 3、webView 返回问题(较好的方法)
+##### 3、webView 返回问题(较好的方法1)
 > android代码
 
 ```android
